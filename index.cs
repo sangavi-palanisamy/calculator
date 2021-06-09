@@ -96,7 +96,7 @@
             }
         });
         $("#multy").click(function () {
-            
+
             var x = document.getElementById("txt").value;
             var y = x.slice(-1)
             if (y == "/" || y == "+" || y == "*" || y == "-") { } else {
@@ -104,7 +104,7 @@
             }
         });
         $("#sub").click(function () {
-           
+
             var x = document.getElementById("txt").value;
             var y = x.slice(-1)
             if (y == "/" || y == "+" || y == "*" || y == "-") { } else {
@@ -112,7 +112,7 @@
             }
         });
         $("#add").click(function () {
-            
+
             var x = document.getElementById("txt").value;
             var y = x.slice(-1)
             if (y == "/" || y == "+" || y == "*" || y == "-") { } else {
@@ -128,14 +128,41 @@
         });
         $("#ce").click(function () {
             var x = document.getElementById("txt").value;
-            $("#txt").val(x.substring(0, x.length - 1))
+            $("#txt").val(0)
+        });
+        $("#res").click(function () {
+            var x = document.getElementById("txt").value;
+            $("#txt").val("")
         });
     });
-</script>
-<style>
-    body {
-        background-image: url("Image/images.jpg");
+
+
+    function Validation() {
+        var values = $("#txt").val();
+
+        $.ajax({
+            url: '/Calculator/GetResult',
+            type: 'POST',
+            data:
+                { str: $("#txt").val() },
+            async: false,
+            success: function (response) {
+                if (response != "") {
+                    $("#txt").val(response);
+                }
+                else {
+                    alert("Something Went to Wrong !")
+                }
+            },
+            error: function (xhr) {
+                alert(" Error is Occured");
+            }
+        });
     }
+    </script>
+
+<style>
+    
 
     #d1 {
        
@@ -160,12 +187,12 @@
 <br />
 <center>
     <div id="d1">
-        @using (@Html.BeginForm("Index", "Calculator"))
+        @using (@Html.BeginForm())
         {
             <table style="height:25%;border:thick;background-color:lightgrey ">
                
                 <tr class="p-5">
-                    <td colspan="4">@Html.TextBox("txt", (string)ViewBag.result)</td>
+                    <td colspan="4">@Html.TextBox("txt")</td>
                 </tr>
                 <tr>
                     <td><input type="button"  class="btns" id="b7" value="7" style="height:40px;width:75px" /></td>
@@ -189,14 +216,14 @@
                     <td><input type="button" class="btns" id="b0" value="0" style="height:40px;width:75px" /></td>
                     <td><input type="button"  class="btns" id="dot" value="." style="height:40px;width:75px" /></td>
                     <td><input type="button" class="btns" id="add" value="+" style="height:40px;width:75px" /></td>
-                    <td><input type="submit" class="btns" id="eq" value="=" style="height:40px;width:75px" /></td>
+                    <td><input type="button" onclick="Validation()" class="btns" id="eq" value="=" style="height:40px;width:75px" /></td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <input type="button" class="btns" id="ce" value="CE" style="height:40px;width:155px" />
                     </td>
                     <td colspan="2">
-                        <input type="reset" class="btns" id="re" value="Clear" style="height:40px;width:155px" />
+                        <input type="button" class="btns" id="res" value="Clear" style="height:40px;width:155px" />
                     </td>
                 </tr>
                 
